@@ -25,6 +25,41 @@ export const Hero = () => {
       {/* Structural Minimal Grid */}
       <div className="absolute inset-0 premium-grid opacity-[0.15] mix-blend-screen pointer-events-none" />
 
+      {/* Abstract Animated SVG Mesh Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-20 dark:opacity-30 mix-blend-screen flex items-center justify-center">
+        <motion.svg
+          viewBox="0 0 1000 1000"
+          className="w-[150%] h-[150%] md:w-[120%] md:h-[120%] text-white"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="0.5"
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
+        >
+          {Array.from({ length: 40 }).map((_, i) => (
+            <motion.ellipse
+              key={i}
+              cx="500"
+              cy="500"
+              rx={150 + i * 15}
+              ry={300 + i * 5}
+              initial={{ rotate: i * 5 }}
+              animate={{ 
+                rotate: [i * 5, i * 5 + 10, i * 5],
+                scale: [1, 1.05, 1]
+              }}
+              transition={{
+                duration: 10 + i * 0.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              strokeDasharray="4 8"
+            />
+          ))}
+        </motion.svg>
+      </div>
+
       {/* 3D Glass / Liquid Metal Element */}
       <div className="absolute inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
@@ -66,7 +101,16 @@ export const Hero = () => {
               Engineering
             </motion.h1>
           </div>
-          <div className="overflow-hidden">
+          <div className="overflow-hidden relative">
+            {/* SVG Text Mask Effect */}
+            <svg width="0" height="0">
+               <defs>
+                 <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                   <stop offset="0%" stopColor="#fff" />
+                   <stop offset="100%" stopColor="#666" />
+                 </linearGradient>
+               </defs>
+            </svg>
             <motion.h1 
               custom={1} variants={textReveal} initial="hidden" animate="visible"
               className="text-transparent bg-clip-text bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground mix-blend-difference"
