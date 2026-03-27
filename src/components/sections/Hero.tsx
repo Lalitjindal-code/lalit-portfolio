@@ -45,7 +45,7 @@ export const Hero = () => {
               rx={150 + i * 15}
               ry={300 + i * 5}
               initial={{ rotate: i * 5 }}
-              animate={{ 
+              animate={{
                 rotate: [i * 5, i * 5 + 10, i * 5],
                 scale: [1, 1.05, 1]
               }}
@@ -67,7 +67,7 @@ export const Hero = () => {
           <directionalLight position={[2, 5, 2]} intensity={1.5} />
           <directionalLight position={[-2, -5, -2]} intensity={0.5} color="#3B82F6" />
           <Environment preset="city" />
-          
+
           <Sphere visible args={[1, 128, 128]} scale={1.8}>
             <MeshDistortMaterial
               color="#111"
@@ -86,7 +86,7 @@ export const Hero = () => {
 
       {/* Content Overlay */}
       <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center pointer-events-none">
-        
+
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -94,7 +94,7 @@ export const Hero = () => {
           className="mb-8 select-none"
         >
           <div className="overflow-hidden">
-            <motion.h1 
+            <motion.h1
               custom={0} variants={textReveal} initial="hidden" animate="visible"
               className="text-white mix-blend-difference"
             >
@@ -104,14 +104,14 @@ export const Hero = () => {
           <div className="overflow-hidden relative">
             {/* SVG Text Mask Effect */}
             <svg width="0" height="0">
-               <defs>
-                 <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                   <stop offset="0%" stopColor="#fff" />
-                   <stop offset="100%" stopColor="#666" />
-                 </linearGradient>
-               </defs>
+              <defs>
+                <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#fff" />
+                  <stop offset="100%" stopColor="#666" />
+                </linearGradient>
+              </defs>
             </svg>
-            <motion.h1 
+            <motion.h1
               custom={1} variants={textReveal} initial="hidden" animate="visible"
               className="text-transparent bg-clip-text bg-gradient-to-r from-foreground via-foreground/90 to-muted-foreground mix-blend-difference"
             >
