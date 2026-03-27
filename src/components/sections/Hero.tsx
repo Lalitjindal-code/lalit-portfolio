@@ -1,9 +1,12 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial, Environment } from "@react-three/drei";
 import { ArrowDownRight } from "lucide-react";
+import { Suspense } from "react";
+
+// Dynamic import to prevent SSR crash with Three.js
+const HeroCanvas = dynamic(() => import("./HeroCanvas"), { ssr: false });
 
 // Proper Framer Motion Typing
 const textReveal: Variants = {
@@ -21,7 +24,7 @@ const textReveal: Variants = {
 
 export const Hero = () => {
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-background">
+    <section id="home" className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-background">
       {/* Structural Minimal Grid */}
       <div className="absolute inset-0 premium-grid opacity-[0.15] mix-blend-screen pointer-events-none" />
 
@@ -60,28 +63,11 @@ export const Hero = () => {
         </motion.svg>
       </div>
 
-      {/* 3D Glass / Liquid Metal Element */}
+      {/* 3D Glass / Liquid Metal Element — SSR Safe */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[2, 5, 2]} intensity={1.5} />
-          <directionalLight position={[-2, -5, -2]} intensity={0.5} color="#3B82F6" />
-          <Environment preset="city" />
-
-          <Sphere visible args={[1, 128, 128]} scale={1.8}>
-            <MeshDistortMaterial
-              color="#111"
-              attach="material"
-              distort={0.5}
-              speed={1.2}
-              roughness={0.1}
-              metalness={0.9}
-              clearcoat={1}
-              clearcoatRoughness={0.1}
-            />
-          </Sphere>
-          <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.8} />
-        </Canvas>
+        <Suspense fallback={<div className="w-full h-full bg-transparent" />}>
+          <HeroCanvas />
+        </Suspense>
       </div>
 
       {/* Content Overlay */}
@@ -102,7 +88,6 @@ export const Hero = () => {
             </motion.h1>
           </div>
           <div className="overflow-hidden relative">
-            {/* SVG Text Mask Effect */}
             <svg width="0" height="0">
               <defs>
                 <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -129,7 +114,7 @@ export const Hero = () => {
           </motion.p>
         </motion.div>
 
-        {/* Magnetic CTA / Interactive Element */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

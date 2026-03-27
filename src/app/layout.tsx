@@ -17,8 +17,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Premium Portfolio",
-  description: "Senior Frontend Architect & UI/UX Designer Portfolio",
+  title: "Lalit Jindal — Frontend Architect & Designer",
+  description: "Engineering premium, high-performance web applications with editorial precision and obsessive attention to craft.",
 };
 
 export default function RootLayout({

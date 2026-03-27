@@ -44,8 +44,9 @@ export const Skills = () => {
 
   return (
     <section 
+      id="skills"
       ref={containerRef}
-      className="py-32 md:py-48 border-t border-white/5 bg-background relative overflow-hidden group"
+      className="py-32 md:py-48 bg-background relative overflow-hidden group"
     >
       {/* Interactive Spotlight Background */}
       <motion.div 
@@ -107,7 +108,7 @@ export const Skills = () => {
                   filter: isOtherHovered ? "blur(4px)" : "blur(0px)",
                 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="relative flex flex-col border border-white/10 rounded-3xl bg-white/[0.02] backdrop-blur-md overflow-hidden p-8 md:p-10 cursor-crosshair transform-gpu"
+                className="relative flex flex-col border border-white/10 rounded-3xl bg-white/[0.02] backdrop-blur-md overflow-hidden p-8 md:p-10 transform-gpu"
               >
                 {/* Dynamic Category SVG backdrop */}
                 <motion.div 

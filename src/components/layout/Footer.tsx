@@ -62,8 +62,8 @@ export const Footer = () => {
           className="flex flex-col md:flex-row items-start md:items-end justify-between gap-12 mb-20 md:mb-32"
         >
           <h2 className="text-5xl md:text-7xl lg:text-[100px] font-semibold tracking-[-0.04em] leading-[0.85]">
-            Let's create <br />
-            <span className="text-muted-foreground">together.</span>
+            Have a vision? <br />
+            <span className="text-muted-foreground">Let's ship it.</span>
           </h2>
           <a 
             href="#contact"

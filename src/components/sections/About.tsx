@@ -92,7 +92,7 @@ export const About = () => {
             The Journey.
           </h2>
 
-          <div className="relative cursor-crosshair">
+          <div className="relative">
             {/* Dark background text layer */}
             <p className="text-3xl md:text-4xl lg:text-5xl font-light leading-[1.3] text-white/5 md:text-white/10 select-none">
               Bridging the gap between deep technical engineering and high-end aesthetic design. The best software feels inevitable, executing complex logic behind an effortless interface.

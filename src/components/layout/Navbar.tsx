@@ -24,7 +24,7 @@ export const Navbar = () => {
 
       // Detect active section
       const sections = navLinks.map(l => l.href.replace("#", ""));
-      for (const id of sections.reverse()) {
+      for (const id of [...sections].reverse()) {
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= 200) {
           setActiveSection(id);

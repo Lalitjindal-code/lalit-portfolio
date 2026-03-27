@@ -291,7 +291,7 @@ export const Contact = () => {
                 <div className="w-24 h-24 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-8">
                   <CheckCircle2 className="w-12 h-12 text-emerald-500" strokeWidth={1.5} />
                 </div>
-                <h3 className="text-5xl md:text-7xl font-medium mb-6 tracking-tight">Transmission <br/> Successful.</h3>
+                <h3 className="text-5xl md:text-7xl font-medium mb-6 tracking-tight">Message <br/> Sent.</h3>
                 <p className="text-muted-foreground text-xl font-light max-w-md mx-auto mb-12">
                   Thank you for reaching out. I've received your {selectedInquiry?.label.toLowerCase()} inquiry and will reply within 24 hours.
                 </p>
