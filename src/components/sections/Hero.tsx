@@ -5,10 +5,8 @@ import { motion, Variants } from "framer-motion";
 import { ArrowDownRight } from "lucide-react";
 import { Suspense } from "react";
 
-// Dynamic import to prevent SSR crash with Three.js
 const HeroCanvas = dynamic(() => import("./HeroCanvas"), { ssr: false });
 
-// Proper Framer Motion Typing
 const textReveal: Variants = {
   hidden: { y: "100%", opacity: 0 },
   visible: (i: number) => ({
@@ -24,15 +22,15 @@ const textReveal: Variants = {
 
 export const Hero = () => {
   return (
-    <section id="home" className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-background">
+    <section id="home" className="relative h-[100dvh] w-full flex items-center justify-center overflow-hidden bg-background">
       {/* Structural Minimal Grid */}
       <div className="absolute inset-0 premium-grid opacity-[0.15] mix-blend-screen pointer-events-none" />
 
-      {/* Abstract Animated SVG Mesh Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-20 dark:opacity-30 mix-blend-screen flex items-center justify-center">
+      {/* Abstract SVG Mesh — reduced count on mobile via CSS */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-10 md:opacity-20 dark:md:opacity-30 mix-blend-screen flex items-center justify-center">
         <motion.svg
           viewBox="0 0 1000 1000"
-          className="w-[150%] h-[150%] md:w-[120%] md:h-[120%] text-white"
+          className="w-[180%] h-[180%] sm:w-[150%] sm:h-[150%] md:w-[120%] md:h-[120%] text-white"
           fill="none"
           stroke="currentColor"
           strokeWidth="0.5"
@@ -40,7 +38,7 @@ export const Hero = () => {
           animate={{ rotate: 360 }}
           transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
         >
-          {Array.from({ length: 40 }).map((_, i) => (
+          {Array.from({ length: 30 }).map((_, i) => (
             <motion.ellipse
               key={i}
               cx="500"
@@ -63,21 +61,25 @@ export const Hero = () => {
         </motion.svg>
       </div>
 
-      {/* 3D Glass / Liquid Metal Element — SSR Safe */}
-      <div className="absolute inset-0 z-0">
-        <Suspense fallback={<div className="w-full h-full bg-transparent" />}>
+      {/* 3D Element — hidden on very small screens for perf */}
+      <div className="absolute inset-0 z-0 hidden sm:block">
+        <Suspense fallback={
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-32 h-32 rounded-full bg-white/5 animate-pulse" />
+          </div>
+        }>
           <HeroCanvas />
         </Suspense>
       </div>
 
       {/* Content Overlay */}
-      <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center pointer-events-none">
+      <div className="container mx-auto px-5 sm:px-6 relative z-10 flex flex-col items-center text-center pointer-events-none">
 
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="mb-8 select-none"
+          className="mb-6 sm:mb-8 select-none"
         >
           <div className="overflow-hidden">
             <motion.h1
@@ -105,10 +107,10 @@ export const Hero = () => {
           </div>
         </motion.div>
 
-        <motion.div className="overflow-hidden max-w-2xl mx-auto mix-blend-difference">
+        <motion.div className="overflow-hidden max-w-2xl mx-auto mix-blend-difference px-2">
           <motion.p
             custom={3} variants={textReveal} initial="hidden" animate="visible"
-            className="text-xl md:text-2xl text-white font-light leading-relaxed"
+            className="text-base sm:text-lg md:text-2xl text-white font-light leading-relaxed"
           >
             Senior Frontend Architect & UI/UX Designer crafting premium, high-performance web applications with editorial precision.
           </motion.p>
@@ -119,12 +121,12 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 1 }}
-          className="mt-16 pointer-events-auto"
+          className="mt-10 sm:mt-16 pointer-events-auto"
         >
-          <a href="#projects" className="group relative inline-flex items-center gap-4 px-8 py-4 rounded-full bg-white/5 border border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-500 backdrop-blur-md">
-            <span className="text-sm font-medium tracking-wide uppercase text-white">Explore Work</span>
-            <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-              <ArrowDownRight className="w-4 h-4" />
+          <a href="#projects" className="group relative inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-white/5 border border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-500 backdrop-blur-md active:scale-95">
+            <span className="text-xs sm:text-sm font-medium tracking-wide uppercase text-white">Explore Work</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+              <ArrowDownRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
           </a>
         </motion.div>

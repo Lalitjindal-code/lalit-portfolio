@@ -6,17 +6,17 @@ import { useState, useRef, useEffect } from "react";
 const skillsData = [
   {
     category: "Architecture",
-    color: "#3B82F6", // Blue
+    color: "#3B82F6",
     items: ["Next.js App Router", "React Server Components", "TypeScript", "State Machines", "Node.js", "GraphQL"]
   },
   {
     category: "Design Systems",
-    color: "#8B5CF6", // Purple 
+    color: "#8B5CF6",
     items: ["Tailwind CSS v4", "Figma Auto-Layout", "Design Tokens", "Typography Scaling", "Radix UI", "Accessibility"]
   },
   {
     category: "High-Performance",
-    color: "#10B981", // Emerald
+    color: "#10B981",
     items: ["Framer Motion", "GSAP", "WebGL", "Three.js", "React Three Fiber", "WebSockets"]
   }
 ];
@@ -24,9 +24,8 @@ const skillsData = [
 export const Skills = () => {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Mouse tracking for localized radial gradient spotlight
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -42,21 +41,28 @@ export const Skills = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <section 
       id="skills"
       ref={containerRef}
-      className="py-32 md:py-48 bg-background relative overflow-hidden group"
+      className="py-20 sm:py-32 md:py-48 bg-background relative overflow-hidden group"
     >
       {/* Interactive Spotlight Background */}
       <motion.div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+        className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 hidden md:block"
         animate={{
           background: `radial-gradient(1000px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.03), transparent 40%)`
         }}
       />
 
-      {/* SVG Grid lines acting dynamically */}
+      {/* Dot Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.05] z-0 flex items-center justify-center">
          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -68,7 +74,7 @@ export const Skills = () => {
          </svg>
       </div>
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10 flex flex-col md:flex-row gap-12 md:gap-24">
+      <div className="container mx-auto px-5 sm:px-6 md:px-12 relative z-10 flex flex-col md:flex-row gap-8 sm:gap-12 md:gap-24">
         
         {/* Left Concept Pillar */}
         <div className="md:w-1/3 flex flex-col justify-between">
@@ -78,22 +84,22 @@ export const Skills = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-4 mb-4 sm:mb-6">
               <span className="h-px w-8 bg-muted-foreground/50" />
               <span className="uppercase tracking-widest text-xs font-mono text-muted-foreground">03 / Capabilities</span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-semibold tracking-[-0.03em] leading-tight mb-8">
+            <h2 className="font-semibold tracking-[-0.03em] leading-tight mb-4 sm:mb-8">
               Technical <br/> Ecosystem.
             </h2>
-            <p className="text-muted-foreground text-lg font-light max-w-sm">
+            <p className="text-muted-foreground font-light max-w-sm hidden sm:block">
               An interactive constellation of technologies. Hover over categories to alter focus, and drag nodes to interact with the environment.
             </p>
           </motion.div>
         </div>
 
         {/* Right Interactive Area */}
-        <div className="md:w-2/3 flex flex-col gap-6">
-          {skillsData.map((group, idx) => {
+        <div className="md:w-2/3 flex flex-col gap-3 sm:gap-4 md:gap-6">
+          {skillsData.map((group) => {
             const isHovered = hoveredCategory === group.category;
             const isOtherHovered = hoveredCategory !== null && !isHovered;
 
@@ -102,17 +108,18 @@ export const Skills = () => {
                 key={group.category}
                 onHoverStart={() => setHoveredCategory(group.category)}
                 onHoverEnd={() => setHoveredCategory(null)}
+                onClick={() => setHoveredCategory(isHovered ? null : group.category)}
                 animate={{
-                  height: isHovered ? "auto" : "120px",
+                  height: isHovered ? "auto" : isMobile ? "auto" : "120px",
                   opacity: isOtherHovered ? 0.3 : 1,
                   filter: isOtherHovered ? "blur(4px)" : "blur(0px)",
                 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="relative flex flex-col border border-white/10 rounded-3xl bg-white/[0.02] backdrop-blur-md overflow-hidden p-8 md:p-10 transform-gpu"
+                className="relative flex flex-col border border-white/10 rounded-2xl sm:rounded-3xl bg-white/[0.02] backdrop-blur-md overflow-hidden p-5 sm:p-8 md:p-10 transform-gpu cursor-pointer"
               >
                 {/* Dynamic Category SVG backdrop */}
                 <motion.div 
-                  className="absolute inset-0 pointer-events-none z-0"
+                  className="absolute inset-0 pointer-events-none z-0 hidden md:block"
                   animate={{
                      opacity: isHovered ? 0.1 : 0
                   }}
@@ -125,36 +132,37 @@ export const Skills = () => {
                 </motion.div>
 
                 {/* Header */}
-                <div className="relative z-10 flex justify-between items-center w-full mb-4">
-                  <h3 className="text-2xl md:text-4xl font-medium tracking-tight text-white transition-colors">
+                <div className="relative z-10 flex justify-between items-center w-full mb-2 sm:mb-4">
+                  <h3 className="text-xl sm:text-2xl md:text-4xl font-medium tracking-tight text-white transition-colors">
                     {group.category}
                   </h3>
                   <motion.div 
                     initial={{ rotate: 0 }}
                     animate={{ rotate: isHovered ? 90 : 0 }}
                     transition={{ duration: 0.5, ease: "backOut" }}
-                    className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/50"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/20 flex items-center justify-center text-white/50 text-sm sm:text-base shrink-0"
                   >
                     +
                   </motion.div>
                 </div>
 
-                {/* Draggable Chips Container */}
+                {/* Draggable Chips */}
                 <motion.div 
-                  className="relative z-10 pt-6 flex flex-wrap gap-4"
+                  className="relative z-10 pt-3 sm:pt-6 flex flex-wrap gap-2 sm:gap-4"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: isHovered ? 1 : 0 }}
+                  animate={{ opacity: isHovered || isMobile ? 1 : 0 }}
                   transition={{ duration: 0.4 }}
                 >
-                  {group.items.map((skill, i) => (
+                  {group.items.map((skill) => (
                     <motion.div
                       key={skill}
                       drag
-                      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }} // Snaps back
+                      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
                       dragElastic={0.2}
                       whileHover={{ scale: 1.05, borderColor: group.color, color: "#fff" }}
+                      whileTap={{ scale: 0.95 }}
                       whileDrag={{ scale: 1.1, zIndex: 50, boxShadow: "0px 10px 30px rgba(0,0,0,0.5)" }}
-                      className="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-muted-foreground font-mono text-sm tracking-wide cursor-grab active:cursor-grabbing hover:bg-white/10 transition-colors backdrop-blur-xl"
+                      className="px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-white/10 bg-white/5 text-muted-foreground font-mono text-xs sm:text-sm tracking-wide cursor-grab active:cursor-grabbing hover:bg-white/10 transition-colors backdrop-blur-xl"
                     >
                       {skill}
                     </motion.div>

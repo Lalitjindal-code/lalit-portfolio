@@ -8,6 +8,7 @@ export const CustomCursor = () => {
   const [hoverText, setHoverText] = useState("");
   const [isClicking, setIsClicking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   // Raw mouse coords
   const mouseX = useMotionValue(0);
@@ -20,6 +21,12 @@ export const CustomCursor = () => {
   // Inner dot: snappy, near-instant
   const dotX = useSpring(mouseX, { stiffness: 600, damping: 35 });
   const dotY = useSpring(mouseY, { stiffness: 600, damping: 35 });
+
+  // Detect touch device on mount
+  useEffect(() => {
+    const isTouch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    setIsTouchDevice(isTouch);
+  }, []);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     mouseX.set(e.clientX);
@@ -43,6 +50,8 @@ export const CustomCursor = () => {
   }, []);
 
   useEffect(() => {
+    if (isTouchDevice) return; // Skip all listeners on touch devices
+
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
     const handleMouseLeave = () => setIsVisible(false);
@@ -63,13 +72,16 @@ export const CustomCursor = () => {
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, [handleMouseMove, handleMouseOver]);
+  }, [handleMouseMove, handleMouseOver, isTouchDevice]);
+
+  // Don't render anything on touch devices
+  if (isTouchDevice) return null;
 
   return (
     <>
-      {/* Layer 1: Outer Magnetic Ring — springs behind the cursor */}
+      {/* Layer 1: Outer Magnetic Ring */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[99] hidden md:flex items-center justify-center mix-blend-difference"
+        className="custom-cursor-ring fixed top-0 left-0 pointer-events-none z-[99] hidden md:flex items-center justify-center mix-blend-difference gpu"
         style={{
           x: ringX,
           y: ringY,
@@ -90,7 +102,6 @@ export const CustomCursor = () => {
           fill="none" 
           stroke="currentColor"
         >
-          {/* Dashed ring that rotates on hover */}
           <motion.circle 
             cx="50" cy="50" r="46"
             strokeWidth={isHovering ? 1 : 1.5}
@@ -105,7 +116,6 @@ export const CustomCursor = () => {
           />
         </svg>
 
-        {/* Hover Label */}
         {hoverText && (
           <motion.span 
             initial={{ opacity: 0, scale: 0.8 }}
@@ -118,9 +128,9 @@ export const CustomCursor = () => {
         )}
       </motion.div>
 
-      {/* Layer 2: Inner Precision Dot — instantaneous follow */}
+      {/* Layer 2: Inner Precision Dot */}
       <motion.div
-        className="fixed top-0 left-0 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference hidden md:block"
+        className="custom-cursor-dot fixed top-0 left-0 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference hidden md:block gpu"
         style={{
           x: dotX,
           y: dotY,

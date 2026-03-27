@@ -103,18 +103,18 @@ export const Contact = () => {
     <section 
       id="contact" 
       ref={containerRef}
-      className="relative py-32 md:py-48 bg-background min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative py-20 sm:py-32 md:py-48 bg-background min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Subtle Interactive Spotlight */}
       <motion.div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.1] transition-opacity duration-1000"
+        className="absolute inset-0 z-0 pointer-events-none opacity-[0.1] transition-opacity duration-1000 hidden md:block"
         animate={{
           background: `radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.4), transparent 40%)`
         }}
       />
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0 premium-grid" />
 
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
+      <div className="container mx-auto px-5 sm:px-6 md:px-12 relative z-10">
         <div className="max-w-4xl mx-auto">
           
           {/* Header */}
@@ -123,14 +123,14 @@ export const Contact = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center mb-20"
+            className="text-center mb-12 sm:mb-20"
           >
             <div className="inline-flex items-center gap-4 mb-6">
               <span className="h-px w-8 bg-muted-foreground/50" />
               <span className="uppercase tracking-widest text-xs font-mono text-muted-foreground">04 / Collaborate</span>
               <span className="h-px w-8 bg-muted-foreground/50" />
             </div>
-            <h2 className="text-5xl md:text-7xl font-semibold tracking-[-0.04em] leading-tight">
+            <h2 className="font-semibold tracking-[-0.04em] leading-tight">
               Start a Conversation.
             </h2>
           </motion.div>
@@ -149,7 +149,7 @@ export const Contact = () => {
                 </div>
                 
                 {/* Bento Box Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                   {INQUIRY_TYPES.map((type, i) => {
                     const Icon = type.icon;
                     return (
@@ -160,12 +160,12 @@ export const Contact = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className={`group flex flex-col items-start text-left p-8 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-md transition-all duration-500 cursor-pointer ${type.color}`}
+                        className={`group flex flex-col items-start text-left p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-md transition-all duration-500 cursor-pointer active:scale-[0.97] ${type.color}`}
                       >
-                        <div className="w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500">
                           <Icon className="w-5 h-5 text-muted-foreground group-hover:text-white transition-colors" />
                         </div>
-                        <h3 className="text-xl font-medium text-white mb-2">{type.label}</h3>
+                        <h3 className="text-lg sm:text-xl font-medium text-white mb-1 sm:mb-2">{type.label}</h3>
                         <p className="text-muted-foreground text-sm leading-relaxed">{type.desc}</p>
                       </motion.button>
                     )
@@ -185,7 +185,7 @@ export const Contact = () => {
               >
                 <button 
                   onClick={handleBack}
-                  className="group flex items-center gap-2 text-sm font-mono uppercase tracking-widest text-muted-foreground hover:text-white transition-colors mb-12"
+                  className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-white transition-colors mb-8 sm:mb-12"
                 >
                   <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   Back to options
@@ -195,14 +195,14 @@ export const Contact = () => {
                   <div className="inline-block px-4 py-2 rounded-full border border-white/20 bg-white/5 text-sm font-medium mb-6 backdrop-blur-md">
                     Discussing: {selectedInquiry.label}
                   </div>
-                  <h3 className="text-4xl md:text-5xl font-light tracking-tight text-white mb-4">
+                  <h3 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-white mb-4">
                     Tell me the details.
                   </h3>
                   <p className="text-muted-foreground text-lg">Leave your contact info and project requirements below.</p>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-12">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 sm:space-y-12">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
                     <div className="relative group/input">
                       <input 
                         {...register("name")} 
@@ -210,9 +210,9 @@ export const Contact = () => {
                         placeholder=" "
                         onFocus={() => setFocusedInput("name")}
                         onBlur={() => setFocusedInput(null)}
-                        className="peer w-full bg-transparent border-0 border-b border-white/20 py-4 text-2xl font-light text-white outline-none transition-colors focus:border-white" 
+                        className="peer w-full bg-transparent border-0 border-b border-white/20 py-3 sm:py-4 text-xl sm:text-2xl font-light text-white outline-none transition-colors focus:border-white" 
                       />
-                      <label htmlFor="name" className="absolute left-0 top-4 text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
+                      <label htmlFor="name" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
                         Full Name
                       </label>
                       <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-white transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
@@ -227,9 +227,9 @@ export const Contact = () => {
                         placeholder=" "
                         onFocus={() => setFocusedInput("email")}
                         onBlur={() => setFocusedInput(null)}
-                        className="peer w-full bg-transparent border-0 border-b border-white/20 py-4 text-2xl font-light text-white outline-none transition-colors focus:border-white" 
+                        className="peer w-full bg-transparent border-0 border-b border-white/20 py-3 sm:py-4 text-xl sm:text-2xl font-light text-white outline-none transition-colors focus:border-white" 
                       />
-                      <label htmlFor="email" className="absolute left-0 top-4 text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
+                      <label htmlFor="email" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
                         Email Address
                       </label>
                       <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-white transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
@@ -250,9 +250,9 @@ export const Contact = () => {
                         target.style.height = "auto";
                         target.style.height = target.scrollHeight + "px";
                       }}
-                      className="peer w-full bg-transparent border-0 border-b border-white/20 py-4 text-2xl font-light text-white outline-none transition-colors focus:border-white min-h-[120px] resize-none overflow-hidden"
+                      className="peer w-full bg-transparent border-0 border-b border-white/20 py-3 sm:py-4 text-xl sm:text-2xl font-light text-white outline-none transition-colors focus:border-white min-h-[100px] sm:min-h-[120px] resize-none overflow-hidden"
                     />
-                    <label htmlFor="message" className="absolute left-0 top-4 text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
+                    <label htmlFor="message" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
                       Your Message
                     </label>
                     <div className="absolute bottom-1 left-0 h-[1px] w-0 bg-white transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
@@ -264,7 +264,7 @@ export const Contact = () => {
                     <button 
                       type="submit" 
                       disabled={isSubmitting}
-                      className="group relative inline-flex items-center justify-center gap-4 px-10 py-5 rounded-full bg-white text-black font-medium text-lg hover:bg-white/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto shadow-[0_0_40px_rgba(255,255,255,0.1)]"
+                      className="group relative inline-flex items-center justify-center gap-4 px-8 sm:px-10 py-4 sm:py-5 rounded-full bg-white text-black font-medium text-base sm:text-lg hover:bg-white/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto shadow-[0_0_40px_rgba(255,255,255,0.1)] active:scale-95"
                     >
                       {isSubmitting ? (
                         <Loader2 className="w-6 h-6 animate-spin" />

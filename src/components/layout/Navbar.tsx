@@ -54,9 +54,9 @@ export const Navbar = () => {
         )}
       >
         <div className={cn(
-          "container mx-auto px-6 md:px-12 flex items-center justify-between transition-all duration-500",
+          "container mx-auto px-5 sm:px-6 md:px-12 flex items-center justify-between transition-all duration-500",
           scrolled 
-            ? "bg-black/60 backdrop-blur-2xl border border-white/[0.06] rounded-full max-w-3xl py-3 px-8 shadow-[0_8px_32px_rgba(0,0,0,0.4)]" 
+            ? "bg-black/60 backdrop-blur-2xl border border-white/[0.06] rounded-full max-w-[90%] sm:max-w-3xl py-3 px-6 sm:px-8 shadow-[0_8px_32px_rgba(0,0,0,0.4)]" 
             : "max-w-7xl py-2"
         )}>
           <Link href="/" className="text-lg font-semibold tracking-tighter relative group">
@@ -138,10 +138,10 @@ export const Navbar = () => {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="group flex items-center gap-6 py-4"
+                    className="group flex items-center gap-4 sm:gap-6 py-3 sm:py-4"
                   >
                     <span className="text-sm font-mono text-muted-foreground/40 w-8">{link.num}</span>
-                    <span className="text-5xl font-light tracking-tight text-white group-hover:text-muted-foreground transition-colors duration-300">
+                    <span className="text-4xl sm:text-5xl font-light tracking-tight text-white group-hover:text-muted-foreground transition-colors duration-300">
                       {link.name}
                     </span>
                   </Link>

@@ -42,26 +42,26 @@ const projects = [
 
 export const Projects = () => {
   return (
-    <section id="projects" className="py-32 md:py-48 relative">
-      <div className="container mx-auto px-6 md:px-12">
+    <section id="projects" className="py-20 sm:py-32 md:py-48 relative">
+      <div className="container mx-auto px-5 sm:px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
-          className="mb-20 md:mb-32 max-w-2xl"
+          className="mb-12 sm:mb-20 md:mb-32 max-w-2xl"
         >
           <div className="flex items-center gap-4 mb-6">
             <span className="h-px w-8 bg-muted-foreground/50" />
             <span className="uppercase tracking-widest text-xs font-mono text-muted-foreground">01 / Projects</span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-semibold tracking-[-0.03em] mb-6">Selected Work</h2>
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light">
+          <h2 className="font-semibold tracking-[-0.03em] mb-4 sm:mb-6">Selected Work</h2>
+          <p className="text-muted-foreground leading-relaxed font-light">
             A curation of complex problems solved through elegant architecture and rigorous engineering.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-10">
           {projects.map((project, idx) => (
             <motion.div
               key={project.title}
@@ -71,22 +71,22 @@ export const Projects = () => {
               transition={{ duration: 0.8, delay: idx * 0.1 }}
             >
               <Link href={project.link} className="group block h-full">
-                <div className="h-full bg-white/[0.02] border border-white/10 hover:bg-white/[0.04] hover:border-white/20 transition-all duration-700 ease-out rounded-[24px] overflow-hidden relative backdrop-blur-sm shadow-2xl">
+                <div className="h-full bg-white/[0.02] border border-white/10 hover:bg-white/[0.04] hover:border-white/20 transition-all duration-700 ease-out rounded-2xl sm:rounded-[24px] overflow-hidden relative backdrop-blur-sm shadow-2xl active:scale-[0.98] gpu">
                   {/* Subtle Hover Gradient Inject */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   
-                  <div className="p-8 md:p-12 flex flex-col h-full justify-between relative z-10">
+                  <div className="p-5 sm:p-8 md:p-12 flex flex-col h-full justify-between relative z-10">
                     <div>
-                      <div className="flex justify-between items-start mb-8">
+                      <div className="flex justify-between items-start mb-5 sm:mb-8">
                         <span className="text-sm font-mono text-muted-foreground/70">{project.year}</span>
                         <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-white group-hover:text-black transition-all duration-500">
                           <ArrowUpRight className="w-5 h-5 transition-transform group-hover:rotate-12" />
                         </div>
                       </div>
-                      <h3 className="text-2xl md:text-4xl font-semibold tracking-[-0.02em] mb-6 transition-colors duration-300">
+                      <h3 className="text-xl sm:text-2xl md:text-4xl font-semibold tracking-[-0.02em] mb-4 sm:mb-6 transition-colors duration-300">
                         {project.title}
                       </h3>
-                      <div className="space-y-6 mb-12">
+                      <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-12">
                         <div>
                           <p className="text-xs uppercase tracking-widest text-muted-foreground/50 mb-2 font-mono">Problem</p>
                           <p className="text-base text-muted-foreground leading-[1.6] font-light">{project.problem}</p>

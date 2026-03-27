@@ -53,21 +53,21 @@ export const Footer = () => {
   return (
     <footer className="relative bg-background border-t border-white/5">
       {/* Grand CTA Banner */}
-      <div className="container mx-auto px-6 md:px-12 py-24 md:py-32">
+      <div className="container mx-auto px-5 sm:px-6 md:px-12 py-16 sm:py-24 md:py-32">
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row items-start md:items-end justify-between gap-12 mb-20 md:mb-32"
+          className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 sm:gap-12 mb-12 sm:mb-20 md:mb-32"
         >
-          <h2 className="text-5xl md:text-7xl lg:text-[100px] font-semibold tracking-[-0.04em] leading-[0.85]">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-[100px] font-semibold tracking-[-0.04em] leading-[0.85]">
             Have a vision? <br />
             <span className="text-muted-foreground">Let's ship it.</span>
           </h2>
           <a 
             href="#contact"
-            className="group inline-flex items-center gap-4 px-8 py-5 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-500 text-lg font-medium shrink-0"
+            className="group inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-5 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-500 text-base sm:text-lg font-medium shrink-0 active:scale-95 w-full sm:w-auto justify-center"
           >
             Start a project
             <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -75,7 +75,7 @@ export const Footer = () => {
         </motion.div>
 
         {/* Divider */}
-        <div className="h-px w-full bg-white/10 mb-16" />
+        <div className="h-px w-full bg-white/10 mb-10 sm:mb-16" />
 
         {/* Bottom Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
@@ -129,7 +129,7 @@ export const Footer = () => {
         </div>
 
         {/* Final Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mt-20 pt-8 border-t border-white/5">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 mt-12 sm:mt-20 pt-6 sm:pt-8 border-t border-white/5">
           <p className="text-xs text-muted-foreground font-mono">
             © {new Date().getFullYear()} Lalit Jindal. Engineered with precision.
           </p>
