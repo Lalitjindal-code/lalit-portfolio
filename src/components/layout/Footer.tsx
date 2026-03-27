@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { MagneticWrapper } from "@/components/ui/MagneticWrapper";
 
 const socialLinks = [
   { 
@@ -65,13 +66,15 @@ export const Footer = () => {
             Have a vision? <br />
             <span className="text-muted-foreground">Let's ship it.</span>
           </h2>
-          <a 
-            href="#contact"
-            className="group inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-5 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-500 text-base sm:text-lg font-medium shrink-0 active:scale-95 w-full sm:w-auto justify-center"
-          >
-            Start a project
-            <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-          </a>
+          <MagneticWrapper strength={0.3}>
+            <a 
+              href="#contact"
+              className="group inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-5 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-500 text-base sm:text-lg font-medium shrink-0 active:scale-95 w-full sm:w-auto justify-center"
+            >
+              Start a project
+              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+            </a>
+          </MagneticWrapper>
         </motion.div>
 
         {/* Divider */}

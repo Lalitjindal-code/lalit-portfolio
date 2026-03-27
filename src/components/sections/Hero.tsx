@@ -2,6 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import { ArrowDownRight } from "lucide-react";
+import { MagneticWrapper } from "@/components/ui/MagneticWrapper";
 
 const textReveal: Variants = {
   hidden: { y: "100%", opacity: 0 },
@@ -110,12 +111,14 @@ export const Hero = () => {
           transition={{ delay: 0.8, duration: 1 }}
           className="mt-10 sm:mt-16 pointer-events-auto"
         >
-          <a href="#projects" className="group relative inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-white/5 border border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-500 backdrop-blur-md active:scale-95">
-            <span className="text-xs sm:text-sm font-medium tracking-wide uppercase text-white">Explore Work</span>
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-              <ArrowDownRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </div>
-          </a>
+          <MagneticWrapper strength={0.4}>
+            <a href="#projects" className="group relative inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-white/5 border border-white/20 hover:bg-white/10 hover:border-white/40 transition-all duration-500 backdrop-blur-md active:scale-95">
+              <span className="text-xs sm:text-sm font-medium tracking-wide uppercase text-white">Explore Work</span>
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-black flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                <ArrowDownRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              </div>
+            </a>
+          </MagneticWrapper>
         </motion.div>
       </div>
     </section>

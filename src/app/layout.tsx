@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { FilmGrain } from "@/components/ui/FilmGrain";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -40,6 +42,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <CustomCursor />
+          <FilmGrain />
+          <ScrollProgress />
           <Navbar />
           <main className="flex-1">
             {children}
