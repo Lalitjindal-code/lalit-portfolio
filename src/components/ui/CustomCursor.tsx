@@ -1,71 +1,138 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useCallback } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export const CustomCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [hoverText, setHoverText] = useState("");
+  const [isClicking, setIsClicking] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Raw mouse coords
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Outer ring: springy, delayed follow
+  const ringX = useSpring(mouseX, { stiffness: 120, damping: 20, mass: 0.8 });
+  const ringY = useSpring(mouseY, { stiffness: 120, damping: 20, mass: 0.8 });
+
+  // Inner dot: snappy, near-instant
+  const dotX = useSpring(mouseX, { stiffness: 600, damping: 35 });
+  const dotY = useSpring(mouseY, { stiffness: 600, damping: 35 });
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
+    if (!isVisible) setIsVisible(true);
+  }, [mouseX, mouseY, isVisible]);
+
+  const handleMouseOver = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const interactive = target.closest("a, button, [role='button'], input, textarea, select, [data-cursor]");
+    
+    if (interactive) {
+      setIsHovering(true);
+      const label = interactive.getAttribute("data-cursor") || 
+                    interactive.getAttribute("aria-label") || "";
+      setHoverText(label);
+    } else {
+      setIsHovering(false);
+      setHoverText("");
+    }
+  }, []);
 
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+    const handleMouseDown = () => setIsClicking(true);
+    const handleMouseUp = () => setIsClicking(false);
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
 
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
-        target.closest("a") ||
-        target.closest("button")
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
-    };
-
-    window.addEventListener("mousemove", updateMousePosition);
+    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+    document.documentElement.addEventListener("mouseleave", handleMouseLeave);
+    document.documentElement.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
+      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+      document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
+      document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, []);
+  }, [handleMouseMove, handleMouseOver]);
 
   return (
     <>
-      {/* Outer SVG Ring/Shape */}
+      {/* Layer 1: Outer Magnetic Ring — springs behind the cursor */}
       <motion.div
-        className="fixed top-0 left-0 w-12 h-12 pointer-events-none z-[99] hidden md:flex items-center justify-center mix-blend-difference"
-        animate={{
-          x: mousePosition.x - 24,
-          y: mousePosition.y - 24,
-          scale: isHovering ? 1.5 : 1,
-          rotate: isHovering ? 45 : 0,
+        className="fixed top-0 left-0 pointer-events-none z-[99] hidden md:flex items-center justify-center mix-blend-difference"
+        style={{
+          x: ringX,
+          y: ringY,
+          translateX: "-50%",
+          translateY: "-50%",
         }}
-        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
+        animate={{
+          width: isHovering ? 80 : isClicking ? 32 : 48,
+          height: isHovering ? 80 : isClicking ? 32 : 48,
+          opacity: isVisible ? 1 : 0,
+          borderRadius: "50%",
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
       >
-        <svg viewBox="0 0 100 100" className="w-full h-full text-white/40" fill="none" stroke="currentColor" strokeWidth="2">
-          {isHovering ? (
-            <path d="M50 10 L50 90 M10 50 L90 50" />
-          ) : (
-            <circle cx="50" cy="50" r="46" />
-          )}
+        <svg 
+          viewBox="0 0 100 100" 
+          className="w-full h-full text-white" 
+          fill="none" 
+          stroke="currentColor"
+        >
+          {/* Dashed ring that rotates on hover */}
+          <motion.circle 
+            cx="50" cy="50" r="46"
+            strokeWidth={isHovering ? 1 : 1.5}
+            strokeDasharray={isHovering ? "8 6" : "0 0"}
+            animate={{ rotate: isHovering ? 360 : 0 }}
+            transition={{ 
+              rotate: { duration: 4, repeat: Infinity, ease: "linear" },
+              strokeDasharray: { duration: 0.4 },
+              strokeWidth: { duration: 0.3 }
+            }}
+            opacity={isHovering ? 0.8 : 0.4}
+          />
         </svg>
+
+        {/* Hover Label */}
+        {hoverText && (
+          <motion.span 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute text-[9px] font-mono uppercase tracking-[0.15em] text-white whitespace-nowrap"
+          >
+            {hoverText}
+          </motion.span>
+        )}
       </motion.div>
 
-      {/* Inner Dot */}
+      {/* Layer 2: Inner Precision Dot — instantaneous follow */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference hidden md:block"
-        animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
-          scale: isHovering ? 0 : 1,
+        className="fixed top-0 left-0 bg-white rounded-full pointer-events-none z-[100] mix-blend-difference hidden md:block"
+        style={{
+          x: dotX,
+          y: dotY,
+          translateX: "-50%",
+          translateY: "-50%",
         }}
-        transition={{ type: "tween", ease: "backOut", duration: 0.15 }}
+        animate={{
+          width: isHovering ? 6 : isClicking ? 10 : 5,
+          height: isHovering ? 6 : isClicking ? 10 : 5,
+          opacity: isVisible ? 1 : 0,
+        }}
+        transition={{ type: "spring", stiffness: 500, damping: 30 }}
       />
     </>
   );
