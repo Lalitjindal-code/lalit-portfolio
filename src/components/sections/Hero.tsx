@@ -1,11 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion, Variants } from "framer-motion";
 import { ArrowDownRight } from "lucide-react";
-import { Suspense } from "react";
-
-const HeroCanvas = dynamic(() => import("./HeroCanvas"), { ssr: false });
 
 const textReveal: Variants = {
   hidden: { y: "100%", opacity: 0 },
@@ -61,16 +57,7 @@ export const Hero = () => {
         </motion.svg>
       </div>
 
-      {/* 3D Element — hidden on very small screens for perf */}
-      <div className="absolute inset-0 z-0 hidden sm:block">
-        <Suspense fallback={
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="w-32 h-32 rounded-full bg-white/5 animate-pulse" />
-          </div>
-        }>
-          <HeroCanvas />
-        </Suspense>
-      </div>
+
 
       {/* Content Overlay */}
       <div className="container mx-auto px-5 sm:px-6 relative z-10 flex flex-col items-center text-center pointer-events-none">
