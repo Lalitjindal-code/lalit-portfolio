@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTheme } from "next-themes";
 
 export const FilmGrain = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -14,11 +16,10 @@ export const FilmGrain = () => {
 
     let animationId: number;
     let lastTime = 0;
-    const FPS = 8; // Lower FPS = grittier, more cinematic stutter
+    const FPS = 8;
     const interval = 1000 / FPS;
 
     const resize = () => {
-      // Use a lower resolution for performance
       canvas.width = window.innerWidth * 0.5;
       canvas.height = window.innerHeight * 0.5;
     };
@@ -36,10 +37,10 @@ export const FilmGrain = () => {
 
       for (let i = 0; i < data.length; i += 4) {
         const value = Math.random() * 255;
-        data[i] = value;       // R
-        data[i + 1] = value;   // G
-        data[i + 2] = value;   // B
-        data[i + 3] = 25;      // A — cinematic visibility
+        data[i] = value;
+        data[i + 1] = value;
+        data[i + 2] = value;
+        data[i + 3] = resolvedTheme === "dark" ? 25 : 10; // Subtler in light mode
       }
 
       ctx.putImageData(imageData, 0, 0);
@@ -53,12 +54,12 @@ export const FilmGrain = () => {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [resolvedTheme]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-[90] pointer-events-none opacity-60 mix-blend-overlay"
+      className="fixed inset-0 z-[90] pointer-events-none opacity-60 dark:opacity-60 mix-blend-overlay"
       style={{ width: "100%", height: "100%" }}
       aria-hidden="true"
     />

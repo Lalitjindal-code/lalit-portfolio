@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 const navLinks = [
   { name: "Projects", href: "#projects", num: "01" },
@@ -22,7 +23,6 @@ export const Navbar = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
 
-      // Detect active section
       const sections = navLinks.map(l => l.href.replace("#", ""));
       for (const id of [...sections].reverse()) {
         const el = document.getElementById(id);
@@ -36,7 +36,6 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -56,13 +55,13 @@ export const Navbar = () => {
         <div className={cn(
           "container mx-auto px-5 sm:px-6 md:px-12 flex items-center justify-between transition-all duration-500",
           scrolled 
-            ? "bg-black/60 backdrop-blur-2xl border border-white/[0.06] rounded-full max-w-[90%] sm:max-w-3xl py-3 px-6 sm:px-8 shadow-[0_8px_32px_rgba(0,0,0,0.4)]" 
+            ? "bg-background/60 backdrop-blur-2xl border border-foreground/[0.06] rounded-full max-w-[90%] sm:max-w-3xl py-3 px-6 sm:px-8 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]" 
             : "max-w-7xl py-2"
         )}>
           <Link href="/" className="text-lg font-semibold tracking-tighter relative group">
             <span className="relative z-10">L</span>
             <span className="text-muted-foreground relative z-10">.</span>
-            <span className="absolute -inset-2 rounded-lg bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <span className="absolute -inset-2 rounded-lg bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Link>
 
           {/* Desktop Nav */}
@@ -76,14 +75,14 @@ export const Navbar = () => {
                   className={cn(
                     "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full group",
                     isActive
-                      ? "text-white"
-                      : "text-muted-foreground hover:text-white"
+                      ? "text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
                   )}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="activeNav"
-                      className="absolute inset-0 bg-white/10 rounded-full border border-white/10"
+                      className="absolute inset-0 bg-foreground/10 rounded-full border border-foreground/10"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -96,8 +95,10 @@ export const Navbar = () => {
             })}
           </nav>
 
-          {/* Status Dot (Desktop) */}
+          {/* Right Section: Theme Toggle + Status */}
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
+            <div className="w-px h-5 bg-foreground/10" />
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -105,14 +106,17 @@ export const Navbar = () => {
             <span className="text-xs font-mono text-muted-foreground">Open</span>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-full border border-white/10 hover:bg-white/5 transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </button>
+          {/* Mobile: Theme Toggle + Menu */}
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="relative w-10 h-10 flex items-center justify-center rounded-full border border-foreground/10 hover:bg-foreground/5 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
       </motion.header>
 
@@ -124,7 +128,7 @@ export const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center"
+            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-2xl flex flex-col items-center justify-center"
           >
             <nav className="flex flex-col items-center gap-2">
               {navLinks.map((link, i) => (
@@ -141,7 +145,7 @@ export const Navbar = () => {
                     className="group flex items-center gap-4 sm:gap-6 py-3 sm:py-4"
                   >
                     <span className="text-sm font-mono text-muted-foreground/40 w-8">{link.num}</span>
-                    <span className="text-4xl sm:text-5xl font-light tracking-tight text-white group-hover:text-muted-foreground transition-colors duration-300">
+                    <span className="text-4xl sm:text-5xl font-light tracking-tight text-foreground group-hover:text-muted-foreground transition-colors duration-300">
                       {link.name}
                     </span>
                   </Link>

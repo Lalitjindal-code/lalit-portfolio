@@ -45,33 +45,40 @@
   --radius-xl: calc(var(--radius) * 1.4);
 }
 
+/* ═══════════════════════════════════════════════════
+   ✨ PASTEL AESTHETIC LIGHT MODE
+   Warm cream base, soft charcoal text, lavender accents
+   ═══════════════════════════════════════════════════ */
 :root {
-  /* Ultra Premium True Black Theme */
-  --background: oklch(0% 0 0); /* Pure Black */
-  --foreground: oklch(98% 0 0); /* Pure White */
-  --card: oklch(5% 0 0);
-  --card-foreground: oklch(98% 0 0);
-  --popover: oklch(5% 0 0);
-  --popover-foreground: oklch(98% 0 0);
-  --primary: oklch(98% 0 0);
-  --primary-foreground: oklch(0% 0 0);
-  --secondary: oklch(10% 0 0);
-  --secondary-foreground: oklch(98% 0 0);
-  --muted: oklch(12% 0 0);
-  --muted-foreground: oklch(65% 0 0);
-  --accent: oklch(12% 0 0);
-  --accent-foreground: oklch(98% 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  --background: oklch(97% 0.008 80);      /* Warm Cream */
+  --foreground: oklch(18% 0.01 260);      /* Soft Charcoal */
+  --card: oklch(95% 0.01 80);             /* Slightly deeper cream */
+  --card-foreground: oklch(18% 0.01 260);
+  --popover: oklch(96% 0.008 80);
+  --popover-foreground: oklch(18% 0.01 260);
+  --primary: oklch(18% 0.01 260);         /* Charcoal primary */
+  --primary-foreground: oklch(97% 0.008 80);
+  --secondary: oklch(93% 0.015 300);      /* Soft Lavender tint */
+  --secondary-foreground: oklch(30% 0.02 260);
+  --muted: oklch(93% 0.01 80);
+  --muted-foreground: oklch(50% 0.01 260);
+  --accent: oklch(90% 0.04 300);          /* Pastel Lavender */
+  --accent-foreground: oklch(25% 0.02 260);
+  --destructive: oklch(0.65 0.15 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(15% 0 0);
-  --input: oklch(15% 0 0);
-  --ring: oklch(100% 0 0); /* White focus ring */
-  --radius: 0.75rem; 
+  --border: oklch(88% 0.01 80);
+  --input: oklch(90% 0.01 80);
+  --ring: oklch(60% 0.08 300);            /* Lavender focus ring */
+  --radius: 0.75rem;
 }
 
+/* ═══════════════════════════════════════════════════
+   🌙 PREMIUM TRUE BLACK DARK MODE 
+   Pure black, high-contrast white, editorial feel
+   ═══════════════════════════════════════════════════ */
 .dark {
-  --background: oklch(0% 0 0); 
-  --foreground: oklch(98% 0 0); 
+  --background: oklch(0% 0 0);
+  --foreground: oklch(98% 0 0);
   --card: oklch(4% 0 0);
   --card-foreground: oklch(98% 0 0);
   --popover: oklch(4% 0 0);
@@ -99,9 +106,18 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-white selection:text-black;
+    @apply bg-background text-foreground antialiased;
   }
-  
+
+  /* Theme-aware selection */
+  .dark body { 
+    -webkit-text-selection: white;
+  }
+  ::selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
+
   /* Noise Overlay */
   body::before {
     content: "";
@@ -109,16 +125,16 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 
-  /* Structural Grid Background */
+  /* Theme-aware Structural Grid */
   .premium-grid {
     background-size: 40px 40px;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-image: linear-gradient(to right, var(--border) 1px, transparent 1px),
+                      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
     mask-image: linear-gradient(to bottom, transparent, black, transparent);
     -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
   }
 
-  /* FLUID TYPOGRAPHY — scales smoothly between 375px and 1440px */
+  /* FLUID TYPOGRAPHY */
   h1, .h1 {
     font-size: clamp(2.75rem, 5vw + 1rem, 7.5rem);
     @apply font-semibold tracking-[-0.04em] leading-[0.9];
@@ -137,14 +153,14 @@
   }
 }
 
-/* GPU Acceleration Helper */
+/* GPU Acceleration */
 .gpu {
   transform: translateZ(0);
   will-change: transform;
   backface-visibility: hidden;
 }
 
-/* Hide custom cursor on touch devices */
+/* Hide cursor on touch */
 @media (hover: none) and (pointer: coarse) {
   .custom-cursor-ring,
   .custom-cursor-dot {
@@ -152,7 +168,27 @@
   }
 }
 
-/* Aurora Background Animations */
+/* ═══════════════════════════════════════════════════
+   ✨ THEME TRANSITION ANIMATION
+   Circular reveal animation when toggling themes
+   ═══════════════════════════════════════════════════ */
+.theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+@keyframes theme-reveal {
+  from { clip-path: circle(0% at var(--tx, 50%) var(--ty, 5%)); }
+  to   { clip-path: circle(150% at var(--tx, 50%) var(--ty, 5%)); }
+}
+
+.theme-reveal-anim {
+  animation: theme-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Aurora Animations */
 @keyframes aurora-1 {
   0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
   33% { transform: translate(5%, -5%) scale(1.1); opacity: 0.5; }

@@ -52,7 +52,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-background border-t border-white/5">
+    <footer className="relative bg-background border-t border-foreground/5">
       {/* Grand CTA Banner */}
       <div className="container mx-auto px-5 sm:px-6 md:px-12 py-16 sm:py-24 md:py-32">
         <motion.div 
@@ -69,7 +69,7 @@ export const Footer = () => {
           <MagneticWrapper strength={0.3}>
             <a 
               href="#contact"
-              className="group inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-5 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-500 text-base sm:text-lg font-medium shrink-0 active:scale-95 w-full sm:w-auto justify-center"
+              className="group inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-5 rounded-full border border-foreground/20 hover:bg-foreground hover:text-background transition-all duration-500 text-base sm:text-lg font-medium shrink-0 active:scale-95 w-full sm:w-auto justify-center"
             >
               Start a project
               <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -78,7 +78,7 @@ export const Footer = () => {
         </motion.div>
 
         {/* Divider */}
-        <div className="h-px w-full bg-white/10 mb-10 sm:mb-16" />
+        <div className="h-px w-full bg-foreground/10 mb-10 sm:mb-16" />
 
         {/* Bottom Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
@@ -101,7 +101,7 @@ export const Footer = () => {
                 <Link 
                   key={link.name} 
                   href={link.href}
-                  className="text-sm text-muted-foreground hover:text-white transition-colors duration-300 w-fit"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 w-fit"
                 >
                   {link.name}
                 </Link>
@@ -119,9 +119,9 @@ export const Footer = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-white transition-colors duration-300 w-fit"
+                  className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 w-fit"
                 >
-                  <span className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-300">
+                  <span className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center group-hover:border-foreground/30 group-hover:bg-foreground/5 transition-all duration-300">
                     {link.icon}
                   </span>
                   {link.name}
@@ -132,16 +132,16 @@ export const Footer = () => {
         </div>
 
         {/* Final Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 mt-12 sm:mt-20 pt-6 sm:pt-8 border-t border-white/5">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 mt-12 sm:mt-20 pt-6 sm:pt-8 border-t border-foreground/5">
           <p className="text-xs text-muted-foreground font-mono">
             © {new Date().getFullYear()} Lalit Jindal. Engineered with precision.
           </p>
           <button
             onClick={scrollToTop}
-            className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-white transition-colors"
+            className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
           >
             Back to top
-            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:-translate-y-1 transition-all duration-300">
+            <div className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center group-hover:border-foreground/30 group-hover:-translate-y-1 transition-all duration-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3">
                 <path d="M12 19V5M5 12l7-7 7 7" />
               </svg>

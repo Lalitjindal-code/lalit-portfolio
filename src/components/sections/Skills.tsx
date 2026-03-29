@@ -67,7 +67,7 @@ export const Skills = () => {
          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="dot-grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="1.5" fill="#ffffff" />
+                <circle cx="2" cy="2" r="1.5" fill="currentColor" />
               </pattern>
             </defs>
             <rect x="0" y="0" width="100%" height="100%" fill="url(#dot-grid)" />
@@ -115,7 +115,7 @@ export const Skills = () => {
                   filter: isOtherHovered ? "blur(4px)" : "blur(0px)",
                 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="relative flex flex-col border border-white/10 rounded-2xl sm:rounded-3xl bg-white/[0.02] backdrop-blur-md overflow-hidden p-5 sm:p-8 md:p-10 transform-gpu cursor-pointer"
+                className="relative flex flex-col border border-foreground/10 rounded-2xl sm:rounded-3xl bg-foreground/[0.02] backdrop-blur-md overflow-hidden p-5 sm:p-8 md:p-10 transform-gpu cursor-pointer"
               >
                 {/* Dynamic Category SVG backdrop */}
                 <motion.div 
@@ -133,14 +133,14 @@ export const Skills = () => {
 
                 {/* Header */}
                 <div className="relative z-10 flex justify-between items-center w-full mb-2 sm:mb-4">
-                  <h3 className="text-xl sm:text-2xl md:text-4xl font-medium tracking-tight text-white transition-colors">
+                  <h3 className="text-xl sm:text-2xl md:text-4xl font-medium tracking-tight text-foreground transition-colors">
                     {group.category}
                   </h3>
                   <motion.div 
                     initial={{ rotate: 0 }}
                     animate={{ rotate: isHovered ? 90 : 0 }}
                     transition={{ duration: 0.5, ease: "backOut" }}
-                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/20 flex items-center justify-center text-white/50 text-sm sm:text-base shrink-0"
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-foreground/20 flex items-center justify-center text-foreground/50 text-sm sm:text-base shrink-0"
                   >
                     +
                   </motion.div>
@@ -162,7 +162,7 @@ export const Skills = () => {
                       whileHover={{ scale: 1.05, borderColor: group.color, color: "#fff" }}
                       whileTap={{ scale: 0.95 }}
                       whileDrag={{ scale: 1.1, zIndex: 50, boxShadow: "0px 10px 30px rgba(0,0,0,0.5)" }}
-                      className="px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-white/10 bg-white/5 text-muted-foreground font-mono text-xs sm:text-sm tracking-wide cursor-grab active:cursor-grabbing hover:bg-white/10 transition-colors backdrop-blur-xl"
+                      className="px-4 sm:px-6 py-2 sm:py-3 rounded-full border border-foreground/10 bg-foreground/5 text-muted-foreground font-mono text-xs sm:text-sm tracking-wide cursor-grab active:cursor-grabbing hover:bg-foreground/10 transition-colors backdrop-blur-xl"
                     >
                       {skill}
                     </motion.div>

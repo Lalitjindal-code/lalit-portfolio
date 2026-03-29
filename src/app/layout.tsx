@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { FilmGrain } from "@/components/ui/FilmGrain";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { PastelDecorations } from "@/components/ui/PastelDecorations";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
           <CustomCursor />
           <FilmGrain />
           <ScrollProgress />
+          <PastelDecorations />
           <Navbar />
           <main className="flex-1">
             {children}

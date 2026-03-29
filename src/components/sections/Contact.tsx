@@ -160,12 +160,12 @@ export const Contact = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className={`group flex flex-col items-start text-left p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-md transition-all duration-500 cursor-pointer active:scale-[0.97] ${type.color}`}
+                        className={`group flex flex-col items-start text-left p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-foreground/5 bg-foreground/[0.02] backdrop-blur-md transition-all duration-500 cursor-pointer active:scale-[0.97] ${type.color}`}
                       >
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500">
-                          <Icon className="w-5 h-5 text-muted-foreground group-hover:text-white transition-colors" />
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-foreground/10 bg-foreground/5 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500">
+                          <Icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
                         </div>
-                        <h3 className="text-lg sm:text-xl font-medium text-white mb-1 sm:mb-2">{type.label}</h3>
+                        <h3 className="text-lg sm:text-xl font-medium text-foreground mb-1 sm:mb-2">{type.label}</h3>
                         <p className="text-muted-foreground text-sm leading-relaxed">{type.desc}</p>
                       </motion.button>
                     )
@@ -185,17 +185,17 @@ export const Contact = () => {
               >
                 <button 
                   onClick={handleBack}
-                  className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-white transition-colors mb-8 sm:mb-12"
+                  className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors mb-8 sm:mb-12"
                 >
                   <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                   Back to options
                 </button>
 
                 <div className="mb-12">
-                  <div className="inline-block px-4 py-2 rounded-full border border-white/20 bg-white/5 text-sm font-medium mb-6 backdrop-blur-md">
+                  <div className="inline-block px-4 py-2 rounded-full border border-foreground/20 bg-foreground/5 text-sm font-medium mb-6 backdrop-blur-md">
                     Discussing: {selectedInquiry.label}
                   </div>
-                  <h3 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-white mb-4">
+                  <h3 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-foreground mb-4">
                     Tell me the details.
                   </h3>
                   <p className="text-muted-foreground text-lg">Leave your contact info and project requirements below.</p>
@@ -210,12 +210,12 @@ export const Contact = () => {
                         placeholder=" "
                         onFocus={() => setFocusedInput("name")}
                         onBlur={() => setFocusedInput(null)}
-                        className="peer w-full bg-transparent border-0 border-b border-white/20 py-3 sm:py-4 text-xl sm:text-2xl font-light text-white outline-none transition-colors focus:border-white" 
+                        className="peer w-full bg-transparent border-0 border-b border-border py-3 sm:py-4 text-xl sm:text-2xl font-light text-foreground outline-none transition-colors focus:border-foreground" 
                       />
-                      <label htmlFor="name" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
+                      <label htmlFor="name" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-foreground peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-foreground peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
                         Full Name
                       </label>
-                      <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-white transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
+                      <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-foreground transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
                       {errors.name && <p className="text-red-400 text-sm mt-3">{errors.name.message}</p>}
                     </div>
                     
@@ -227,12 +227,12 @@ export const Contact = () => {
                         placeholder=" "
                         onFocus={() => setFocusedInput("email")}
                         onBlur={() => setFocusedInput(null)}
-                        className="peer w-full bg-transparent border-0 border-b border-white/20 py-3 sm:py-4 text-xl sm:text-2xl font-light text-white outline-none transition-colors focus:border-white" 
+                        className="peer w-full bg-transparent border-0 border-b border-border py-3 sm:py-4 text-xl sm:text-2xl font-light text-foreground outline-none transition-colors focus:border-foreground" 
                       />
-                      <label htmlFor="email" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
+                      <label htmlFor="email" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-foreground peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-foreground peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
                         Email Address
                       </label>
-                      <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-white transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
+                      <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-foreground transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
                       {errors.email && <p className="text-red-400 text-sm mt-3">{errors.email.message}</p>}
                     </div>
                   </div>
@@ -250,12 +250,12 @@ export const Contact = () => {
                         target.style.height = "auto";
                         target.style.height = target.scrollHeight + "px";
                       }}
-                      className="peer w-full bg-transparent border-0 border-b border-white/20 py-3 sm:py-4 text-xl sm:text-2xl font-light text-white outline-none transition-colors focus:border-white min-h-[100px] sm:min-h-[120px] resize-none overflow-hidden"
+                      className="peer w-full bg-transparent border-0 border-b border-border py-3 sm:py-4 text-xl sm:text-2xl font-light text-foreground outline-none transition-colors focus:border-foreground min-h-[100px] sm:min-h-[120px] resize-none overflow-hidden"
                     />
-                    <label htmlFor="message" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-white peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-white peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
+                    <label htmlFor="message" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-foreground peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-foreground peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
                       Your Message
                     </label>
-                    <div className="absolute bottom-1 left-0 h-[1px] w-0 bg-white transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
+                    <div className="absolute bottom-1 left-0 h-[1px] w-0 bg-foreground transition-all duration-500 peer-focus:w-full group-hover/input:w-1/4" />
                     {errors.message && <p className="text-red-400 text-sm mt-3">{errors.message.message}</p>}
                   </div>
                   
@@ -264,7 +264,7 @@ export const Contact = () => {
                     <button 
                       type="submit" 
                       disabled={isSubmitting}
-                      className="group relative inline-flex items-center justify-center gap-4 px-8 sm:px-10 py-4 sm:py-5 rounded-full bg-white text-black font-medium text-base sm:text-lg hover:bg-white/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto shadow-[0_0_40px_rgba(255,255,255,0.1)] active:scale-95"
+                      className="group relative inline-flex items-center justify-center gap-4 px-8 sm:px-10 py-4 sm:py-5 rounded-full bg-foreground text-background font-medium text-base sm:text-lg hover:bg-foreground/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto shadow-[0_0_40px_rgba(0,0,0,0.05)] dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] active:scale-95"
                     >
                       {isSubmitting ? (
                         <Loader2 className="w-6 h-6 animate-spin" />
@@ -297,7 +297,7 @@ export const Contact = () => {
                 </p>
                 <button 
                   onClick={() => setIsSubmitted(false)}
-                  className="text-sm font-mono uppercase tracking-widest text-muted-foreground hover:text-white transition-colors border-b border-transparent hover:border-white pb-1"
+                  className="text-sm font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors border-b border-transparent hover:border-foreground pb-1"
                 >
                   Send another message
                 </button>

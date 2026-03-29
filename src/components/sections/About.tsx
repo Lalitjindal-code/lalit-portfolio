@@ -68,9 +68,9 @@ export const About = () => {
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0">
         <svg width="100%" height="100%">
           <pattern id="topo" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-             <path d="M0 50 Q 25 25 50 50 T 100 50" fill="none" stroke="#fff" strokeWidth="1" />
-             <path d="M0 70 Q 25 45 50 70 T 100 70" fill="none" stroke="#fff" strokeWidth="1" />
-             <path d="M0 90 Q 25 65 50 90 T 100 90" fill="none" stroke="#fff" strokeWidth="1" />
+             <path d="M0 50 Q 25 25 50 50 T 100 50" fill="none" stroke="currentColor" strokeWidth="1" />
+             <path d="M0 70 Q 25 45 50 70 T 100 70" fill="none" stroke="currentColor" strokeWidth="1" />
+             <path d="M0 90 Q 25 65 50 90 T 100 90" fill="none" stroke="currentColor" strokeWidth="1" />
           </pattern>
           <rect width="100%" height="100%" fill="url(#topo)" />
         </svg>
@@ -91,7 +91,7 @@ export const About = () => {
 
           <div className="relative">
             {/* Dark background text */}
-            <p className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-light leading-[1.3] text-white/5 sm:text-white/10 select-none">
+            <p className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-light leading-[1.3] text-foreground/5 dark:text-foreground/10 select-none">
               Bridging the gap between deep technical engineering and high-end aesthetic design. The best software feels inevitable, executing complex logic behind an effortless interface.
             </p>
             
@@ -103,13 +103,13 @@ export const About = () => {
                 maskImage: `radial-gradient(400px circle at ${torchPos.x}px ${torchPos.y - 120}px, black 10%, transparent 100%)`
               }}
             >
-              <p className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-light leading-[1.3] text-white">
+              <p className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-light leading-[1.3] text-foreground">
                 Bridging the gap between deep technical engineering and high-end aesthetic design. The best software feels inevitable, executing complex logic behind an effortless interface.
               </p>
             </motion.div>
 
             {/* Mobile: show text directly at readable opacity */}
-            <p className="text-xl sm:text-2xl font-light leading-[1.3] text-white/70 mt-6 md:hidden">
+            <p className="text-xl sm:text-2xl font-light leading-[1.3] text-foreground/70 mt-6 md:hidden">
               Bridging the gap between deep technical engineering and high-end aesthetic design. The best software feels inevitable, executing complex logic behind an effortless interface.
             </p>
           </div>
@@ -127,7 +127,7 @@ export const About = () => {
                 onHoverStart={() => setHoveredPillar(pillar.id)}
                 onHoverEnd={() => setHoveredPillar(null)}
                 onClick={() => setHoveredPillar(isHovered ? null : pillar.id)}
-                className={`relative flex flex-col border border-white/10 rounded-2xl sm:rounded-[2rem] bg-white/[0.02] backdrop-blur-md overflow-hidden p-6 sm:p-8 md:p-12 cursor-pointer transition-all duration-700 gpu
+                className={`relative flex flex-col border border-foreground/10 rounded-2xl sm:rounded-[2rem] bg-foreground/[0.02] backdrop-blur-md overflow-hidden p-6 sm:p-8 md:p-12 cursor-pointer transition-all duration-700 gpu
                   ${!hoveredPillar ? "md:flex-1" : isHovered ? "md:flex-[3]" : "md:flex-[0.5]"}
                 `}
                 animate={{
@@ -143,7 +143,7 @@ export const About = () => {
                 {/* Title */}
                 <h3 
                   className={`text-2xl sm:text-3xl font-medium tracking-tight mb-4 sm:mb-6 transition-all duration-700
-                    ${isOtherHovered ? "text-white/20" : "text-white"}
+                    ${isOtherHovered ? "text-foreground/20" : "text-foreground"}
                     ${isHovered ? "md:text-4xl lg:text-5xl" : ""}
                   `}
                 >
@@ -166,7 +166,7 @@ export const About = () => {
 
                 {/* Dynamic SVG Shape */}
                 <motion.div 
-                  className="absolute bottom-[-10%] right-[-10%] pointer-events-none mix-blend-screen"
+                  className="absolute bottom-[-10%] right-[-10%] pointer-events-none mix-blend-screen dark:mix-blend-screen mix-blend-multiply"
                   initial={{ rotate: 0, scale: 0.8 }}
                   animate={{ 
                     rotate: isHovered ? 90 : 0,
