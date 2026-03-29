@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useTheme } from "next-themes";
 
 const navLinks = [
   { name: "Projects", href: "#projects", num: "01" },
@@ -18,11 +19,15 @@ export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+  const isDark = !mounted || resolvedTheme === "dark";
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-
       const sections = navLinks.map(l => l.href.replace("#", ""));
       for (const id of [...sections].reverse()) {
         const el = document.getElementById(id);
@@ -55,7 +60,12 @@ export const Navbar = () => {
         <div className={cn(
           "container mx-auto px-5 sm:px-6 md:px-12 flex items-center justify-between transition-all duration-500",
           scrolled 
-            ? "bg-background/60 backdrop-blur-2xl border border-foreground/[0.06] rounded-full max-w-[90%] sm:max-w-3xl py-3 px-6 sm:px-8 shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]" 
+            ? cn(
+                "backdrop-blur-2xl border rounded-full max-w-[90%] sm:max-w-3xl py-3 px-6 sm:px-8",
+                isDark
+                  ? "bg-background/60 border-foreground/[0.06] shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+                  : "bg-background/70 border-foreground/[0.06] shadow-[0_4px_24px_rgba(0,0,0,0.06)]"
+              )
             : "max-w-7xl py-2"
         )}>
           <Link href="/" className="text-lg font-semibold tracking-tighter relative group">
@@ -74,15 +84,18 @@ export const Navbar = () => {
                   href={link.href}
                   className={cn(
                     "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full group",
-                    isActive
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                    isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="activeNav"
-                      className="absolute inset-0 bg-foreground/10 rounded-full border border-foreground/10"
+                      className={cn(
+                        "absolute inset-0 rounded-full border",
+                        isDark
+                          ? "bg-foreground/10 border-foreground/10"
+                          : "bg-foreground/[0.05] border-foreground/[0.08] shadow-sm"
+                      )}
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -95,18 +108,18 @@ export const Navbar = () => {
             })}
           </nav>
 
-          {/* Right Section: Theme Toggle + Status */}
+          {/* Right */}
           <div className="hidden md:flex items-center gap-3">
             <ThemeToggle />
             <div className="w-px h-5 bg-foreground/10" />
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="text-xs font-mono text-muted-foreground">Open</span>
           </div>
 
-          {/* Mobile: Theme Toggle + Menu */}
+          {/* Mobile */}
           <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
             <button
@@ -120,7 +133,7 @@ export const Navbar = () => {
         </div>
       </motion.header>
 
-      {/* Full-Screen Mobile Menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -130,7 +143,15 @@ export const Navbar = () => {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 bg-background/95 backdrop-blur-2xl flex flex-col items-center justify-center"
           >
-            <nav className="flex flex-col items-center gap-2">
+            {/* Light mode: subtle orb in mobile menu */}
+            {!isDark && (
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-[20%] right-[10%] w-[300px] h-[300px] rounded-full" style={{ background: "radial-gradient(circle, rgba(196,167,231,0.1) 0%, transparent 60%)" }} />
+                <div className="absolute bottom-[15%] left-[5%] w-[250px] h-[250px] rounded-full" style={{ background: "radial-gradient(circle, rgba(235,188,186,0.08) 0%, transparent 60%)" }} />
+              </div>
+            )}
+
+            <nav className="flex flex-col items-center gap-2 relative z-10">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.name}
@@ -160,8 +181,8 @@ export const Navbar = () => {
               className="absolute bottom-12 flex items-center gap-3 text-xs font-mono text-muted-foreground"
             >
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
               Available for new projects
             </motion.div>

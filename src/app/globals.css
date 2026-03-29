@@ -50,25 +50,25 @@
    Warm cream base, soft charcoal text, lavender accents
    ═══════════════════════════════════════════════════ */
 :root {
-  --background: oklch(97% 0.008 80);      /* Warm Cream */
-  --foreground: oklch(18% 0.01 260);      /* Soft Charcoal */
-  --card: oklch(95% 0.01 80);             /* Slightly deeper cream */
-  --card-foreground: oklch(18% 0.01 260);
-  --popover: oklch(96% 0.008 80);
-  --popover-foreground: oklch(18% 0.01 260);
-  --primary: oklch(18% 0.01 260);         /* Charcoal primary */
-  --primary-foreground: oklch(97% 0.008 80);
-  --secondary: oklch(93% 0.015 300);      /* Soft Lavender tint */
-  --secondary-foreground: oklch(30% 0.02 260);
-  --muted: oklch(93% 0.01 80);
-  --muted-foreground: oklch(50% 0.01 260);
-  --accent: oklch(90% 0.04 300);          /* Pastel Lavender */
-  --accent-foreground: oklch(25% 0.02 260);
+  --background: oklch(96.5% 0.008 80);    /* Warm Cream — slightly richer */
+  --foreground: oklch(15% 0.012 260);     /* Deep Charcoal — darker for contrast */
+  --card: oklch(94% 0.01 80);             /* Slightly deeper cream */
+  --card-foreground: oklch(15% 0.012 260);
+  --popover: oklch(95% 0.008 80);
+  --popover-foreground: oklch(15% 0.012 260);
+  --primary: oklch(15% 0.012 260);        /* Deep charcoal primary */
+  --primary-foreground: oklch(96.5% 0.008 80);
+  --secondary: oklch(91% 0.02 300);       /* Lavender tint — more saturated */
+  --secondary-foreground: oklch(25% 0.02 260);
+  --muted: oklch(91% 0.01 80);
+  --muted-foreground: oklch(38% 0.015 260); /* MUCH darker — was 50%, key fix */
+  --accent: oklch(88% 0.05 300);          /* Pastel Lavender — more vivid */
+  --accent-foreground: oklch(20% 0.02 260);
   --destructive: oklch(0.65 0.15 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(88% 0.01 80);
-  --input: oklch(90% 0.01 80);
-  --ring: oklch(60% 0.08 300);            /* Lavender focus ring */
+  --border: oklch(84% 0.012 80);          /* Darker border — was 88%, more card definition */
+  --input: oklch(88% 0.01 80);
+  --ring: oklch(55% 0.1 300);             /* Lavender focus ring — more vivid */
   --radius: 0.75rem;
 }
 
@@ -118,11 +118,15 @@
     color: var(--background);
   }
 
-  /* Noise Overlay */
+  /* Noise Overlay — subtle in light, cinematic in dark */
   body::before {
     content: "";
-    @apply fixed inset-0 z-[-1] pointer-events-none opacity-[0.03];
+    @apply fixed inset-0 z-[-1] pointer-events-none;
+    opacity: 0.015;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+  .dark body::before {
+    opacity: 0.03;
   }
 
   /* Theme-aware Structural Grid */

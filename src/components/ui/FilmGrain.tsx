@@ -59,7 +59,7 @@ export const FilmGrain = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-[90] pointer-events-none opacity-60 dark:opacity-60 mix-blend-overlay"
+      className="fixed inset-0 z-[90] pointer-events-none opacity-30 dark:opacity-60 mix-blend-soft-light dark:mix-blend-overlay"
       style={{ width: "100%", height: "100%" }}
       aria-hidden="true"
     />

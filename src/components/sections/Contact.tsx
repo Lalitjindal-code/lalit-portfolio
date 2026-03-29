@@ -6,15 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState, useRef, useEffect } from "react";
 import { ArrowUpRight, Loader2, CheckCircle2, Code2, Rocket, GraduationCap, Globe, Coffee, ArrowLeft, HeartHandshake } from "lucide-react";
+import { useTheme } from "next-themes";
 
-// Expanded Inquiry Options with Icons and Context
 const INQUIRY_TYPES = [
-  { id: "freelance", label: "Freelance Project", desc: "Build a high-performance web app.", icon: Code2, color: "hover:border-blue-500/50 hover:bg-blue-500/10" },
-  { id: "startup", label: "Startup Advisory", desc: "Technical architecture & scaling.", icon: Rocket, color: "hover:border-purple-500/50 hover:bg-purple-500/10" },
-  { id: "internship", label: "Internship", desc: "Looking to join your engineering team.", icon: GraduationCap, color: "hover:border-emerald-500/50 hover:bg-emerald-500/10" },
-  { id: "mentorship", label: "Mentorship", desc: "Guidance on frontend & design.", icon: HeartHandshake, color: "hover:border-rose-500/50 hover:bg-rose-500/10" },
-  { id: "opensource", label: "Open Source", desc: "Collaborate on public tooling.", icon: Globe, color: "hover:border-zinc-500/50 hover:bg-zinc-500/10" },
-  { id: "coffee", label: "Just saying Hi", desc: "Let's grab a virtual coffee.", icon: Coffee, color: "hover:border-amber-500/50 hover:bg-amber-500/10" },
+  { id: "freelance", label: "Freelance Project", desc: "Build a high-performance web app.", icon: Code2, color: "hover:border-blue-500/50 hover:bg-blue-500/10", lightColor: "hover:bg-blue-50/60" },
+  { id: "startup", label: "Startup Advisory", desc: "Technical architecture & scaling.", icon: Rocket, color: "hover:border-purple-500/50 hover:bg-purple-500/10", lightColor: "hover:bg-purple-50/60" },
+  { id: "internship", label: "Internship", desc: "Looking to join your engineering team.", icon: GraduationCap, color: "hover:border-emerald-500/50 hover:bg-emerald-500/10", lightColor: "hover:bg-emerald-50/60" },
+  { id: "mentorship", label: "Mentorship", desc: "Guidance on frontend & design.", icon: HeartHandshake, color: "hover:border-rose-500/50 hover:bg-rose-500/10", lightColor: "hover:bg-rose-50/60" },
+  { id: "opensource", label: "Open Source", desc: "Collaborate on public tooling.", icon: Globe, color: "hover:border-zinc-500/50 hover:bg-zinc-500/10", lightColor: "hover:bg-zinc-50/60" },
+  { id: "coffee", label: "Just saying Hi", desc: "Let's grab a virtual coffee.", icon: Coffee, color: "hover:border-amber-500/50 hover:bg-amber-500/10", lightColor: "hover:bg-amber-50/60" },
 ] as const;
 
 const formSchema = z.object({
@@ -28,12 +28,14 @@ export const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
-  
-  // Two-step form state
   const [selectedInquiry, setSelectedInquiry] = useState<typeof INQUIRY_TYPES[number] | null>(null);
-
   const containerRef = useRef<HTMLElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+  const isDark = !mounted || resolvedTheme === "dark";
 
   const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,10 +46,7 @@ export const Contact = () => {
     const handleMouseMove = (e: MouseEvent) => {
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        setMousePos({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        });
+        setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
       }
     };
     window.addEventListener("mousemove", handleMouseMove);
@@ -67,36 +66,22 @@ export const Contact = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-
     try {
       if (!WEB3FORMS_KEY) {
-        console.warn("No Web3Forms key provided. Simulating success.");
         await new Promise(res => setTimeout(res, 2000));
         setIsSubmitted(true);
         reset();
         return;
       }
-
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          ...values,
-          inquiryLabel: selectedInquiry?.label
-        }),
+        body: JSON.stringify({ access_key: WEB3FORMS_KEY, ...values, inquiryLabel: selectedInquiry?.label }),
       });
-
       const result = await response.json();
-      if (result.success) {
-        setIsSubmitted(true);
-        reset();
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
-    }
+      if (result.success) { setIsSubmitted(true); reset(); }
+    } catch (err) { console.error(err); }
+    finally { setIsSubmitting(false); }
   };
 
   return (
@@ -105,14 +90,41 @@ export const Contact = () => {
       ref={containerRef}
       className="relative py-20 sm:py-32 md:py-48 bg-background min-h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Subtle Interactive Spotlight */}
-      <motion.div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.1] transition-opacity duration-1000 hidden md:block"
-        animate={{
-          background: `radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.4), transparent 40%)`
-        }}
-      />
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0 premium-grid" />
+      {/* Light mode: pastel orbs */}
+      {!isDark && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute top-[10%] right-[20%] w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] rounded-full"
+            style={{ background: "radial-gradient(circle, rgba(235,188,186,0.12) 0%, transparent 65%)" }}
+            animate={{ scale: [1, 1.1, 1], y: [0, -15, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bottom-[5%] left-[10%] w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] rounded-full"
+            style={{ background: "radial-gradient(circle, rgba(196,167,231,0.1) 0%, transparent 65%)" }}
+            animate={{ scale: [1, 1.12, 1] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          />
+          <motion.svg
+            viewBox="0 0 100 100" className="absolute bottom-[12%] right-[5%] w-10 h-10 sm:w-14 sm:h-14 text-rose-300/15"
+            animate={{ rotate: [0, 180, 360], y: [0, -10, 0] }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 8" />
+          </motion.svg>
+        </div>
+      )}
+
+      {/* Dark mode: spotlight */}
+      {isDark && (
+        <>
+          <motion.div 
+            className="absolute inset-0 z-0 pointer-events-none opacity-[0.1] transition-opacity duration-1000 hidden md:block"
+            animate={{ background: `radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.4), transparent 40%)` }}
+          />
+          <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0 premium-grid" />
+        </>
+      )}
 
       <div className="container mx-auto px-5 sm:px-6 md:px-12 relative z-10">
         <div className="max-w-4xl mx-auto">
@@ -148,7 +160,6 @@ export const Contact = () => {
                   <p className="text-xl text-muted-foreground font-light">How can I help you today?</p>
                 </div>
                 
-                {/* Bento Box Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                   {INQUIRY_TYPES.map((type, i) => {
                     const Icon = type.icon;
@@ -160,9 +171,16 @@ export const Contact = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                        className={`group flex flex-col items-start text-left p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-foreground/5 bg-foreground/[0.02] backdrop-blur-md transition-all duration-500 cursor-pointer active:scale-[0.97] ${type.color}`}
+                        className={`group flex flex-col items-start text-left p-5 sm:p-8 rounded-2xl sm:rounded-3xl transition-all duration-500 cursor-pointer active:scale-[0.97]
+                          ${isDark
+                            ? `border border-foreground/5 bg-foreground/[0.02] backdrop-blur-md ${type.color}`
+                            : `border border-foreground/[0.06] bg-background shadow-sm hover:shadow-lg ${type.lightColor}`
+                          }
+                        `}
                       >
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-foreground/10 bg-foreground/5 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500">
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-500
+                          ${isDark ? "border border-foreground/10 bg-foreground/5" : "border border-foreground/[0.08] bg-foreground/[0.03]"}
+                        `}>
                           <Icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
                         </div>
                         <h3 className="text-lg sm:text-xl font-medium text-foreground mb-1 sm:mb-2">{type.label}</h3>
@@ -192,7 +210,9 @@ export const Contact = () => {
                 </button>
 
                 <div className="mb-12">
-                  <div className="inline-block px-4 py-2 rounded-full border border-foreground/20 bg-foreground/5 text-sm font-medium mb-6 backdrop-blur-md">
+                  <div className={`inline-block px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-md
+                    ${isDark ? "border border-foreground/20 bg-foreground/5" : "border border-foreground/10 bg-foreground/[0.03] shadow-sm"}
+                  `}>
                     Discussing: {selectedInquiry.label}
                   </div>
                   <h3 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-foreground mb-4">
@@ -205,9 +225,7 @@ export const Contact = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
                     <div className="relative group/input">
                       <input 
-                        {...register("name")} 
-                        id="name"
-                        placeholder=" "
+                        {...register("name")} id="name" placeholder=" "
                         onFocus={() => setFocusedInput("name")}
                         onBlur={() => setFocusedInput(null)}
                         className="peer w-full bg-transparent border-0 border-b border-border py-3 sm:py-4 text-xl sm:text-2xl font-light text-foreground outline-none transition-colors focus:border-foreground" 
@@ -221,10 +239,7 @@ export const Contact = () => {
                     
                     <div className="relative group/input">
                       <input 
-                        {...register("email")} 
-                        id="email"
-                        type="email" 
-                        placeholder=" "
+                        {...register("email")} id="email" type="email" placeholder=" "
                         onFocus={() => setFocusedInput("email")}
                         onBlur={() => setFocusedInput(null)}
                         className="peer w-full bg-transparent border-0 border-b border-border py-3 sm:py-4 text-xl sm:text-2xl font-light text-foreground outline-none transition-colors focus:border-foreground" 
@@ -237,19 +252,12 @@ export const Contact = () => {
                     </div>
                   </div>
                   
-                  {/* Message Area */}
                   <div className="relative group/input">
                     <textarea
-                      {...register("message")}
-                      id="message"
-                      placeholder=" "
+                      {...register("message")} id="message" placeholder=" "
                       onFocus={() => setFocusedInput("message")}
                       onBlur={() => setFocusedInput(null)}
-                      onInput={(e) => {
-                        const target = e.target as HTMLTextAreaElement;
-                        target.style.height = "auto";
-                        target.style.height = target.scrollHeight + "px";
-                      }}
+                      onInput={(e) => { const t = e.target as HTMLTextAreaElement; t.style.height = "auto"; t.style.height = t.scrollHeight + "px"; }}
                       className="peer w-full bg-transparent border-0 border-b border-border py-3 sm:py-4 text-xl sm:text-2xl font-light text-foreground outline-none transition-colors focus:border-foreground min-h-[100px] sm:min-h-[120px] resize-none overflow-hidden"
                     />
                     <label htmlFor="message" className="absolute left-0 top-3 sm:top-4 text-xl sm:text-2xl text-muted-foreground/50 transition-all duration-300 pointer-events-none peer-focus:-top-6 peer-focus:text-xs peer-focus:text-foreground peer-focus:font-mono peer-focus:uppercase peer-focus:tracking-widest peer-[:not(:placeholder-shown)]:-top-6 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-foreground peer-[:not(:placeholder-shown)]:font-mono peer-[:not(:placeholder-shown)]:uppercase peer-[:not(:placeholder-shown)]:tracking-widest">
@@ -259,20 +267,18 @@ export const Contact = () => {
                     {errors.message && <p className="text-red-400 text-sm mt-3">{errors.message.message}</p>}
                   </div>
                   
-                  {/* Submit Button */}
                   <div className="pt-8">
                     <button 
-                      type="submit" 
-                      disabled={isSubmitting}
-                      className="group relative inline-flex items-center justify-center gap-4 px-8 sm:px-10 py-4 sm:py-5 rounded-full bg-foreground text-background font-medium text-base sm:text-lg hover:bg-foreground/90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto shadow-[0_0_40px_rgba(0,0,0,0.05)] dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] active:scale-95"
+                      type="submit" disabled={isSubmitting}
+                      className={`group relative inline-flex items-center justify-center gap-4 px-8 sm:px-10 py-4 sm:py-5 rounded-full font-medium text-base sm:text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto active:scale-95
+                        ${isDark
+                          ? "bg-foreground text-background hover:bg-foreground/90 shadow-[0_0_40px_rgba(255,255,255,0.1)]"
+                          : "bg-foreground text-background hover:bg-foreground/90 shadow-lg hover:shadow-xl"
+                        }
+                      `}
                     >
-                      {isSubmitting ? (
-                        <Loader2 className="w-6 h-6 animate-spin" />
-                      ) : (
-                        <>
-                          <span>Send Message</span>
-                          <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                        </>
+                      {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : (
+                        <><span>Send Message</span><ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /></>
                       )}
                     </button>
                   </div>
@@ -293,7 +299,7 @@ export const Contact = () => {
                 </div>
                 <h3 className="text-5xl md:text-7xl font-medium mb-6 tracking-tight">Message <br/> Sent.</h3>
                 <p className="text-muted-foreground text-xl font-light max-w-md mx-auto mb-12">
-                  Thank you for reaching out. I've received your {selectedInquiry?.label.toLowerCase()} inquiry and will reply within 24 hours.
+                  Thank you for reaching out. I&apos;ve received your {selectedInquiry?.label.toLowerCase()} inquiry and will reply within 24 hours.
                 </p>
                 <button 
                   onClick={() => setIsSubmitted(false)}

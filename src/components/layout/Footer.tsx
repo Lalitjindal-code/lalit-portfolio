@@ -4,11 +4,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { MagneticWrapper } from "@/components/ui/MagneticWrapper";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const socialLinks = [
   { 
-    name: "Twitter / X", 
-    href: "#",
+    name: "Twitter / X", href: "#",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
@@ -16,8 +17,7 @@ const socialLinks = [
     ),
   },
   { 
-    name: "LinkedIn", 
-    href: "#",
+    name: "LinkedIn", href: "#",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
@@ -27,8 +27,7 @@ const socialLinks = [
     ),
   },
   { 
-    name: "GitHub", 
-    href: "#",
+    name: "GitHub", href: "#",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
@@ -47,14 +46,37 @@ const footerNavLinks = [
 ];
 
 export const Footer = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = !mounted || resolvedTheme === "dark";
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="relative bg-background border-t border-foreground/5">
-      {/* Grand CTA Banner */}
-      <div className="container mx-auto px-5 sm:px-6 md:px-12 py-16 sm:py-24 md:py-32">
+    <footer className="relative bg-background border-t border-foreground/5 overflow-hidden">
+      {/* Light mode: subtle pastel accent */}
+      {!isDark && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute -bottom-[20%] right-[10%] w-[400px] h-[400px] rounded-full"
+            style={{ background: "radial-gradient(circle, rgba(196,167,231,0.08) 0%, transparent 60%)" }}
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.svg
+            viewBox="0 0 100 100" className="absolute top-[15%] left-[5%] w-8 h-8 sm:w-12 sm:h-12 text-sky-300/10"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          >
+            <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="8 6" />
+          </motion.svg>
+        </div>
+      )}
+
+      <div className="container mx-auto px-5 sm:px-6 md:px-12 py-16 sm:py-24 md:py-32 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -64,12 +86,17 @@ export const Footer = () => {
         >
           <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-[100px] font-semibold tracking-[-0.04em] leading-[0.85]">
             Have a vision? <br />
-            <span className="text-muted-foreground">Let's ship it.</span>
+            <span className="text-muted-foreground">Let&apos;s ship it.</span>
           </h2>
           <MagneticWrapper strength={0.3}>
             <a 
               href="#contact"
-              className="group inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-5 rounded-full border border-foreground/20 hover:bg-foreground hover:text-background transition-all duration-500 text-base sm:text-lg font-medium shrink-0 active:scale-95 w-full sm:w-auto justify-center"
+              className={`group inline-flex items-center gap-3 sm:gap-4 px-6 sm:px-8 py-4 sm:py-5 rounded-full border transition-all duration-500 text-base sm:text-lg font-medium shrink-0 active:scale-95 w-full sm:w-auto justify-center
+                ${isDark
+                  ? "border-foreground/20 hover:bg-foreground hover:text-background"
+                  : "border-foreground/15 hover:bg-foreground hover:text-background shadow-sm hover:shadow-lg"
+                }
+              `}
             >
               Start a project
               <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -82,8 +109,6 @@ export const Footer = () => {
 
         {/* Bottom Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
-          
-          {/* Col 1: Brand */}
           <div className="md:col-span-4 flex flex-col gap-6">
             <Link href="/" className="text-2xl font-semibold tracking-tighter w-fit">
               L<span className="text-muted-foreground">.</span>
@@ -93,14 +118,12 @@ export const Footer = () => {
             </p>
           </div>
 
-          {/* Col 2: Navigation */}
           <div className="md:col-span-3 md:col-start-6">
             <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">Navigation</p>
             <nav className="flex flex-col gap-3">
               {footerNavLinks.map((link) => (
                 <Link 
-                  key={link.name} 
-                  href={link.href}
+                  key={link.name} href={link.href}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 w-fit"
                 >
                   {link.name}
@@ -109,19 +132,20 @@ export const Footer = () => {
             </nav>
           </div>
 
-          {/* Col 3: Socials */}
           <div className="md:col-span-3 md:col-start-10">
             <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground mb-6">Connect</p>
             <div className="flex flex-col gap-3">
               {socialLinks.map((link) => (
                 <Link
-                  key={link.name}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  key={link.name} href={link.href} target="_blank" rel="noopener noreferrer"
                   className="group flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 w-fit"
                 >
-                  <span className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center group-hover:border-foreground/30 group-hover:bg-foreground/5 transition-all duration-300">
+                  <span className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300
+                    ${isDark
+                      ? "border-foreground/10 group-hover:border-foreground/30 group-hover:bg-foreground/5"
+                      : "border-foreground/[0.08] group-hover:border-foreground/20 group-hover:bg-foreground/[0.03]"
+                    }
+                  `}>
                     {link.icon}
                   </span>
                   {link.name}
@@ -131,7 +155,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Final Bottom Bar */}
+        {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 mt-12 sm:mt-20 pt-6 sm:pt-8 border-t border-foreground/5">
           <p className="text-xs text-muted-foreground font-mono">
             © {new Date().getFullYear()} Lalit Jindal. Engineered with precision.
@@ -141,7 +165,9 @@ export const Footer = () => {
             className="group flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
           >
             Back to top
-            <div className="w-8 h-8 rounded-full border border-foreground/10 flex items-center justify-center group-hover:border-foreground/30 group-hover:-translate-y-1 transition-all duration-300">
+            <div className={`w-8 h-8 rounded-full border flex items-center justify-center group-hover:-translate-y-1 transition-all duration-300
+              ${isDark ? "border-foreground/10 group-hover:border-foreground/30" : "border-foreground/[0.08] group-hover:border-foreground/20"}
+            `}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3 h-3">
                 <path d="M12 19V5M5 12l7-7 7 7" />
               </svg>
